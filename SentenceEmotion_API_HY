@@ -1,0 +1,35 @@
+import urllib.parse
+import urllib.request
+import json
+
+raw_text = '나는 지금 너무 행복하다!'
+text = urllib.parse.quote(raw_text)
+url = 'http://ibis_api.hanyang.ac.kr:5000/sentiment_analysis?text=' + text
+
+print("running......\n")
+
+try :
+    data = urllib.request.urlopen(url).read()
+    # print(data)
+    data = data.decode("utf-8")
+    j_data = json.loads(data)
+    print(j_data, "\n")
+
+    if j_data['ERROR'] == 'None':
+        print('ERROR :', j_data['ERROR'])
+        print('raw_comment :', raw_text)
+        print('predict :', j_data['predict'])
+        print('predict -> predict_emotion :', j_data['predict']['predict_emotion'])
+#        print('predict -> predict_per :', j_data['predict']['predict_per'])
+        print('emotion_per :', j_data['emotion_per'])
+        print('emotion_per -> anger_per :', j_data['emotion_per']['anger_per'])
+        print('emotion_per -> disgust_per :', j_data['emotion_per']['disgust_per'])
+        print('emotion_per -> fear_per :', j_data['emotion_per']['fear_per'])
+        print('emotion_per -> happiness_per :', j_data['emotion_per']['happiness_per'])
+        print('emotion_per -> neutral_per :', j_data['emotion_per']['neutral_per'])
+        print('emotion_per -> sadness_per :', j_data['emotion_per']['sadness_per'])
+        print('emotion_per -> surprise_per :', j_data['emotion_per']['surprise_per'])
+    else :
+        print('ERROR :', j_data['ERROR'])
+except :
+    print("!!!! ERROR !!!!")
